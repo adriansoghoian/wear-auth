@@ -28,6 +28,7 @@ public class WearActivity extends Activity implements SensorEventListener {
 
     private GoogleApiClient mGoogleApiClient;
     Button authenticate;
+    Button train;
     SensorManager senSensorManager;
     Sensor senAccelerometer;
     private long lastUpdate = 0;
@@ -56,6 +57,7 @@ public class WearActivity extends Activity implements SensorEventListener {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 authenticate = (Button) findViewById(R.id.authenticate);
+                train = (Button) findViewById(R.id.train);
                 System.out.println("onCreate: about to create button");
 
                 authenticate.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +65,17 @@ public class WearActivity extends Activity implements SensorEventListener {
                     public void onClick(View v) {
                         recording = ! recording;
                         if (! recording) {
-                            pingPhone();
+                            pingPhone(false);
+                        }
+                    }
+                });
+
+                train.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        recording = ! recording;
+                        if (! recording) {
+                            pingPhone(true);
                         }
                     }
                 });
@@ -71,7 +83,8 @@ public class WearActivity extends Activity implements SensorEventListener {
         });
     }
 
-    public void pingPhone() {
+    public void pingPhone(boolean isTrain) {
+        final boolean status = isTrain;
         if (mGoogleApiClient == null) {
             System.out.println("pingPhone: null from GoogleApiClient.");
             return;
@@ -89,8 +102,14 @@ public class WearActivity extends Activity implements SensorEventListener {
                     for (int i=0; i<nodes.size(); i++) {
                         final Node node = nodes.get(i);
                         byte[] measurement_bytes = convert2byte(measurements);
-                        Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "/MESSAGE", measurement_bytes);
-                        System.out.println("pingPhone: sent message " + measurement_bytes);
+                        if (status) {
+                            Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "/TRAIN", measurement_bytes);
+                        } else {
+                            Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "/AUTHENTICATE", measurement_bytes);
+                        }
+                        System.out.println("pingPhone: sent message " + measurement_bytes + " of length " + measurement_bytes.length);
+                        System.out.println("pingPhone: actual measures are " + measurements.get(0)[0] + " " + measurements.get(0)[1] + " " + measurements.get(0)[2]);
+                        measurements = new ArrayList();
                     }
                 }
             }
@@ -123,6 +142,9 @@ public class WearActivity extends Activity implements SensorEventListener {
     }
 
     public static byte[] convert2byte(ArrayList<float[]> vals) {
+        if(vals.size() == 0){
+            System.out.println("convert2byte: You gave me an empty list.");
+        }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
@@ -134,6 +156,12 @@ public class WearActivity extends Activity implements SensorEventListener {
                     e.printStackTrace();
                 }
             }
+        }
+        try {
+            baos.close();
+            dos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return baos.toByteArray();

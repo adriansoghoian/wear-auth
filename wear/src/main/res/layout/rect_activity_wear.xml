@@ -16,4 +16,13 @@
         android:paddingTop="10dp"
         android:text="@string/authenticate" />
 
+    <Button
+        android:id="@+id/train"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingLeft="8dp"
+        android:paddingTop="20dp"
+        android:text="@string/train" />
+
 </LinearLayout>
