@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class MyActivity extends Activity {
 
-    public TextView status;
+    public static TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,4 +35,5 @@ public class MyActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -18,6 +18,9 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class WearActivity extends Activity implements SensorEventListener {
@@ -110,17 +113,17 @@ public class WearActivity extends Activity implements SensorEventListener {
     }
 
     public static byte[] convert2byte(float[] vals) {
-        int j = 0;
-        int length = vals.length;
-        byte[] outData = new byte[ length*4 ];
-        for (int i= 0; i<length; i++) {
-            int data = Float.floatToIntBits(vals[i]);
-            outData[j++]=(byte)(data>>>24);
-            outData[j++]=(byte)(data>>>16);
-            outData[j++]=(byte)(data>>>8);
-            outData[j++]=(byte)(data>>>0);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(baos);
+        for (int i= 0; i<vals.length; i++) {
+            try {
+                dos.writeFloat(vals[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return outData;
+        return baos.toByteArray();
     }
 
     @Override
