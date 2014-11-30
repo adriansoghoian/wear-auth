@@ -42,7 +42,6 @@ public class WearActivity extends Activity implements SensorEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wear);
-        System.out.println("onCreate: about to init sensor manager.");
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
@@ -58,8 +57,6 @@ public class WearActivity extends Activity implements SensorEventListener {
             public void onLayoutInflated(WatchViewStub stub) {
                 authenticate = (Button) findViewById(R.id.authenticate);
                 train = (Button) findViewById(R.id.train);
-                System.out.println("onCreate: about to create button");
-
                 authenticate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -83,21 +80,19 @@ public class WearActivity extends Activity implements SensorEventListener {
         });
     }
 
+    // we also need to fix the trailing zeros in the messages we're passing
     public void pingPhone(boolean isTrain) {
         final boolean status = isTrain;
         if (mGoogleApiClient == null) {
             System.out.println("pingPhone: null from GoogleApiClient.");
             return;
         }
-        System.out.println("pingPhone: About to start method.");
         final PendingResult<NodeApi.GetConnectedNodesResult> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
-        System.out.println("pingPhone: Registered for nodes through GoogleApi.");
         nodes.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
 
             @Override
             public void onResult(NodeApi.GetConnectedNodesResult result) {
                 final List<Node> nodes = result.getNodes();
-                System.out.println("pingPhone: Got nodes.");
                 if (nodes != null) {
                     for (int i=0; i<nodes.size(); i++) {
                         final Node node = nodes.get(i);

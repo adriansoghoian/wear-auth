@@ -6,9 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MyActivity extends Activity {
 
-    public static TextView status;
+    public TextView status;
+    public static ArrayList<float[]> training_sequence = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

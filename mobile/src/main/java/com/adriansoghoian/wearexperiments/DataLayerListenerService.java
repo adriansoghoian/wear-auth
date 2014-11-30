@@ -27,16 +27,25 @@ public class DataLayerListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
-        if("/MESSAGE".equals(messageEvent.getPath())) {
+        if("/AUTHENTICATE".equals(messageEvent.getPath())) {
             byte[] data = messageEvent.getData();
             System.out.println("onMessageReceived: buffer of length " + data.length);
-            readByteArray(data);
-
+            ArrayList<float[]> authentication_sequence = readByteArray(data);
+            float score = dtw.compareMeasurements(authentication_sequence, MyActivity.training_sequence);
+            System.out.println("Matching training seq: " + printArrayFloat(MyActivity.training_sequence));
+            System.out.println("Matching auth seq: " + printArrayFloat(authentication_sequence));
+            System.out.println("DTW score: " + score);
+        }
+        if("/TRAIN".equals(messageEvent.getPath())) {
+            byte[] data = messageEvent.getData();
+            System.out.println("onMessageReceived: buffer of length " + data.length);
+            MyActivity.training_sequence = readByteArray(data);
+            System.out.println("Saved new training sequence.");
         }
     }
 
     // This still seems to produce a lot of errors...
-    private void readByteArray(byte[] data)
+    private ArrayList<float[]> readByteArray(byte[] data)
     {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(bais);
@@ -49,9 +58,10 @@ public class DataLayerListenerService extends WearableListenerService {
                     sample[j] = dis.readFloat();
                     output += sample[j] + "\t";
                 } catch (IOException e) {
-                    System.out.println("readByteArray: error reading dis");
+//                    System.out.println("readByteArray: error reading dis");
                 }
             }
+            output += "\n";
             measurements.add(sample);
         }
         System.out.println("readByteArray " + output);
@@ -62,9 +72,21 @@ public class DataLayerListenerService extends WearableListenerService {
         } catch (IOException e) {
             System.out.println("readByteArray: error closing dis/ bais");
         }
+        return measurements;
 //        status = MyActivity.status;
 //        status.setText(output);
 
+    }
+
+    private String printArrayFloat(ArrayList<float[]> sequence){
+        String output = "";
+        for (float[] test : sequence){
+            for(int i = 0; i < test.length; i++){
+                output += test[i] + "\t";
+            }
+            output += " \n";
+        }
+        return  output;
     }
 
 }
