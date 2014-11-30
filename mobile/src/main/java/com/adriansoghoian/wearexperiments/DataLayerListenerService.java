@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 
 public class DataLayerListenerService extends WearableListenerService {
@@ -38,16 +39,22 @@ public class DataLayerListenerService extends WearableListenerService {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(bais);
         String output = "";
+        ArrayList<float[]> measurements = new ArrayList();
         for(int i=0;i<data.length;i++){
-            try {
-                output += dis.readFloat() + "\t";
-            } catch (IOException e) {
-                e.printStackTrace();
+            float[] sample = new float[3];
+            for(int j = 0; j < 3; j++){
+                try {
+                    sample[j] = dis.readFloat();
+                    output += sample[j] + "\t";
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            measurements.add(sample);
         }
-        System.out.println(output);
-        status = MyActivity.status;
-        status.setText(output);
+        System.out.println("readByteArray " + output);
+//        status = MyActivity.status;
+//        status.setText(output);
 
     }
 

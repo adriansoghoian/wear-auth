@@ -21,6 +21,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WearActivity extends Activity implements SensorEventListener {
@@ -33,12 +34,14 @@ public class WearActivity extends Activity implements SensorEventListener {
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 300;
     public float[] data;
+    private boolean recording = false;
+    private ArrayList<float[]> measurements = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wear);
-
+        System.out.println("onCreate: about to init sensor manager.");
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
@@ -53,12 +56,15 @@ public class WearActivity extends Activity implements SensorEventListener {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 authenticate = (Button) findViewById(R.id.authenticate);
-                System.out.println("We're in the on create method");
+                System.out.println("onCreate: about to create button");
 
                 authenticate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pingPhone();
+                        recording = ! recording;
+                        if (! recording) {
+                            pingPhone();
+                        }
                     }
                 });
             }
@@ -66,22 +72,25 @@ public class WearActivity extends Activity implements SensorEventListener {
     }
 
     public void pingPhone() {
-        if (mGoogleApiClient == null)
+        if (mGoogleApiClient == null) {
+            System.out.println("pingPhone: null from GoogleApiClient.");
             return;
-
+        }
+        System.out.println("pingPhone: About to start method.");
         final PendingResult<NodeApi.GetConnectedNodesResult> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
+        System.out.println("pingPhone: Registered for nodes through GoogleApi.");
         nodes.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
 
             @Override
             public void onResult(NodeApi.GetConnectedNodesResult result) {
                 final List<Node> nodes = result.getNodes();
+                System.out.println("pingPhone: Got nodes.");
                 if (nodes != null) {
                     for (int i=0; i<nodes.size(); i++) {
                         final Node node = nodes.get(i);
-//                        byte[] myvar = "Hi, just testing this!".getBytes();
-                        data = new float[] { last_x, last_y, last_z };
-                        byte[] myvar = convert2byte(data);
-                        Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "/MESSAGE", myvar);
+                        byte[] measurement_bytes = convert2byte(measurements);
+                        Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), "/MESSAGE", measurement_bytes);
+                        System.out.println("pingPhone: sent message " + measurement_bytes);
                     }
                 }
             }
@@ -90,7 +99,9 @@ public class WearActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (! recording) return;
         Sensor mySensor = event.sensor;
+        // System.out.println("onSensorChanged: " + event.values[0]);
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
             float y = event.values[1];
@@ -104,25 +115,27 @@ public class WearActivity extends Activity implements SensorEventListener {
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD) {
-                    last_x = x;
-                    last_y = y;
-                    last_z = z;
+                    float[] data = {x, y, z};
+                    measurements.add(data);
                 }
             }
         }
     }
 
-    public static byte[] convert2byte(float[] vals) {
+    public static byte[] convert2byte(ArrayList<float[]> vals) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
-        for (int i= 0; i<vals.length; i++) {
-            try {
-                dos.writeFloat(vals[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
+        for( float[] coords : vals){
+            for (int i= 0; i<coords.length; i++) {
+                try {
+                    dos.writeFloat(coords[i]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
         return baos.toByteArray();
     }
 
