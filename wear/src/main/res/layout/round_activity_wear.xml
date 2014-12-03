@@ -10,9 +10,22 @@
         android:id="@+id/authenticate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:paddingLeft="8dp"
         android:paddingTop="10dp"
-        android:text="@string/authenticate" />
+        android:text="@string/authenticate"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
+
+    <Button
+        android:id="@+id/train"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="10dp"
+        android:text="@string/train"
+        android:layout_below="@+id/authenticate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp" />
 
 </RelativeLayout>
