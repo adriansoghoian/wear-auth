@@ -65,7 +65,6 @@ public class WearActivity extends Activity implements SensorEventListener {
     public void pingPhone() {
         if (mGoogleApiClient == null)
             return;
-
         final PendingResult<NodeApi.GetConnectedNodesResult> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
         nodes.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
 
