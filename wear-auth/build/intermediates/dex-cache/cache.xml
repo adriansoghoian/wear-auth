@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/pre-dexed/debug/classes-ab57433914fbcacf2dbe017bb2f0fd52d67cc0fa.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/classes-ea2fe25a443f38183584297767cd22b93b0a5549.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.android.support/support-v13/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e128103d5281ddd26195a7f980b36d0d005a4e56"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-f212e44b5a7ce3b5c4600548660b262ed7718004.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/classes-3b4961c968afa2af33e924de20457e3a9b8e47c0.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-d9898b05ab4cab20d61dd937fd4b6435dc68a0e0.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-2376361eea1763fc8d46182da89ef25746f033c1.jar"
+        jar="/Users/geoffreypeterson/workspace/android frameworks/sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/classes-1d9e22c8a98ab0d07daaa41b5aa798da66ce3811.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.google.android.support/wearable/1.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="6804efbb78d7facc2e1aa107c7342bee83afae45"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-3591d051a4a78397fe083dc9b9c4c9d075c13149.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.android.support/support-v13/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="27bbd3982cdfe4468a9bf99c8c773734a9049e33"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/pre-dexed/debug/classes-dba3ccbfe11bed132cce986600b286593dc4b3d0.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/pre-dexed/debug/classes-708addb21dd86938d78d4001027f2ee23f10f493.jar"
+        jar="/Users/geoffreypeterson/workspace/wear-auth/wear-auth/wear/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/5.0.77/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="80a6f6f2d0dfcfae8c424cf81dcdf7157e7bf4b8"/>
+
+</pre-dex-items>
