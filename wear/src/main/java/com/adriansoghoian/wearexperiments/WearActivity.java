@@ -33,7 +33,7 @@ public class WearActivity extends Activity implements SensorEventListener {
     Sensor senAccelerometer;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 300;
+    private static final int SHAKE_THRESHOLD = 0;
     public float[] data;
     private boolean recording = false;
     private ArrayList<float[]> measurements = new ArrayList();

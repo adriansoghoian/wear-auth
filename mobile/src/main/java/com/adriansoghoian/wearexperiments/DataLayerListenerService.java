@@ -25,7 +25,8 @@ public class DataLayerListenerService extends WearableListenerService {
 
     TextView status;
     float[] floatOutput;
-    int counter = 1;
+    int internal_counter = 0;
+    int external_counter = 0;
 
     public DataLayerListenerService() {
     }
@@ -41,12 +42,16 @@ public class DataLayerListenerService extends WearableListenerService {
             System.out.println("Matching training seq: " + printArrayFloat(MyActivity.training_sequence));
             System.out.println("Matching auth seq: " + printArrayFloat(authentication_sequence));
             System.out.println("DTW score: " + score);
+            //saveInternalOutput(printArrayFloat(authentication_sequence));
+            saveExternalOutput(printArrayFloat(authentication_sequence));
         }
         if("/TRAIN".equals(messageEvent.getPath())) {
             byte[] data = messageEvent.getData();
             System.out.println("onMessageReceived: buffer of length " + data.length);
             MyActivity.training_sequence = readByteArray(data);
             System.out.println("Saved new training sequence.");
+            //saveInternalOutput("train - " + printArrayFloat(MyActivity.training_sequence));
+            saveExternalOutput("train - " + printArrayFloat(MyActivity.training_sequence));
         }
     }
 
@@ -99,20 +104,20 @@ public class DataLayerListenerService extends WearableListenerService {
         //save to internal storage
         //note all files deleted on app uninstall
         //need to attach device to computer to retrieve
-        String filename = "myfile" + counter + ".txt";
-        counter++;
+        String filename = "myfile" + internal_counter + ".txt";
+        internal_counter++;
 
         FileOutputStream fos = null;
         try {
             fos = openFileOutput(filename, Context.MODE_PRIVATE);
             fos.write(output.getBytes());
             fos.close();
+            System.out.printf("Printed trace to internal memory %s.\n", filename);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void saveExternalOutput(String output){
@@ -124,15 +129,23 @@ public class DataLayerListenerService extends WearableListenerService {
             //not able to write
         }
         // Get the directory for the user's public doc directory.
+        System.out.printf("env path is %s.\n", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
         File myDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "Wear Auth Docs");
-        if (!myDir.mkdirs()) {
+        if (!myDir.mkdirs() || !myDir.isDirectory()) {
             System.out.println("Directory not created");
             myDir.mkdirs();
         }
 
-        String filename = "myfile" + counter + ".txt";
-        counter++;
+        File[] allFiles = myDir.listFiles();
+        external_counter = allFiles.length;
+        String num_string = "";
+        if(external_counter < 10){
+            num_string += "0";
+        }
+        num_string += external_counter;
+        String filename = "myfile" + num_string + ".txt";
+        //external_counter++;
         File file = new File(myDir,filename);
         FileOutputStream outputStream;
 
@@ -140,7 +153,9 @@ public class DataLayerListenerService extends WearableListenerService {
             outputStream = new FileOutputStream(file);
             outputStream.write(output.getBytes());
             outputStream.close();
+            System.out.printf("Printed trace to external memory %s.\n", filename);
         } catch (Exception e) {
+            System.out.printf("Could not print trace to external memory %s!.\n", filename);
             e.printStackTrace();
         }
 
